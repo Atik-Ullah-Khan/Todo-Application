@@ -6,9 +6,9 @@
  ***/
 
 const User = require("../models/user");
+const uuid = require("../utils/userIdGenerator");
 const CustomError = require("../../config/CustomError");
 const { signAccessToken } = require("../utils/tokenManager");
-const { v4: uudi } = require("uuid");
 
 // module scaffolding.
 const user = {};
@@ -20,7 +20,7 @@ user.signUp = async (req, res, next) => {
   const isExist = await User.findOne({ email });
   if (isExist) return next(new CustomError(409, `${email} already exists`));
 
-  const userObject = { userId: uudi(), firstName, lastName, email, password };
+  const userObject = { userId: uuid(), firstName, lastName, email, password };
 
   await new User(userObject).save();
 

@@ -11,16 +11,15 @@ const todoSchema = new Schema(
   {
     userId: { type: String, required: true },
     title: { type: String, required: true },
-    description: { type: String, required: true },
+    description: { type: String },
     priority: {
       type: String,
       enum: ["high", "medium", "low", "normal"],
       default: "normal",
-      required: true,
     },
+    category: { type: String, required: true },
     deadline: {
       type: Date,
-      required: true,
     },
   },
   { timestamps: true }
