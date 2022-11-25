@@ -8,6 +8,7 @@
 const router = require("express").Router();
 
 // middlewares.
+const { verifyAccessToken: auth } = require("../utils/tokenManager");
 const asyncWrapper = require("../middlewares/asyncWrapper");
 
 // controllers.
@@ -17,6 +18,8 @@ const {
   updateTodo,
   deleteTodo,
 } = require("../controllers/todoController");
+
+router.use(auth);
 
 router
   .route("/")
