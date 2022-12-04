@@ -11,22 +11,21 @@ const bcrypt = require("bcryptjs");
 const userSchema = new Schema(
   {
     userId: { type: String, required: true },
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
+    fullName: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    varified: { type: Boolean, default: false },
+    verified: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
 
-userSchema.pre("save", async function save(next) {
-  if (!this.isModified("password")) return next();
+// userSchema.pre("save", async function save(next) {
+//   if (!this.isModified("password")) return next();
 
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  return next();
-});
+//   const salt = await bcrypt.genSalt(10);
+//   this.password = await bcrypt.hash(this.password, salt);
+//   return next();
+// });
 
 userSchema.methods = {
   async validatePassword(data) {

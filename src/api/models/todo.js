@@ -17,10 +17,7 @@ const todoSchema = new Schema(
       enum: ["high", "medium", "low", "normal"],
       default: "normal",
     },
-    category: { type: String, required: true },
-    deadline: {
-      type: Date,
-    },
+    completed: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

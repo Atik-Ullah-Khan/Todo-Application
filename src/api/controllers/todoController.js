@@ -7,16 +7,18 @@
 
 const Todo = require("../models/todo");
 const CustomError = require("../../config/CustomError");
+const { Types } = require("mongoose");
 
 // module scaffolding.
 const todo = {};
 
 // get all todos.
 todo.getTodos = async (req, res, _next) => {
-  // const { filter } = req.body;
   const userId = req.userId;
 
-  const todos = await Todo.find({ userId }).select("-__v");
+  const todos = await Todo.find({ userId })
+    .select("-__v")
+    .sort({ createdAt: -1 });
 
   res.status(200).json({
     status: 200,
@@ -27,15 +29,14 @@ todo.getTodos = async (req, res, _next) => {
 
 // create a new todo.
 todo.createTodo = async (req, res, _next) => {
-  const { userId, title, description, priority, category, deadline } = req.body;
+  const { title, description, priority } = req.body;
+  const userId = req.userId;
 
   const todoObject = {
     userId,
     title,
     description,
     priority,
-    category,
-    deadline,
   };
 
   const todo = await new Todo(todoObject).save();
@@ -49,19 +50,18 @@ todo.createTodo = async (req, res, _next) => {
 };
 
 // update an existing todo.
-todo.updateTodo = async (req, res, _next) => {
-  const { _id, title, description, priority, category, deadline } = req.body;
+todo.updateTodo = async (req, res, next) => {
+  const { _id, title, description, priority, completed } = req.body;
   const userId = req.userId;
 
   const todo = await Todo.findOne({ userId, _id }).select("-__v");
 
-  if (!todo) return _next(new CustomError(404, "todo not found."));
+  if (!todo) return next(new CustomError(404, "todo not found."));
 
   todo.title = title ?? todo.title;
   todo.description = description ?? todo.description;
   todo.priority = priority ?? todo.priority;
-  todo.category = category ?? todo.category;
-  todo.deadline = deadline ?? todo.deadline;
+  todo.completed = completed ?? todo.completed;
 
   await todo.save();
 
@@ -73,13 +73,13 @@ todo.updateTodo = async (req, res, _next) => {
 };
 
 // delete an existing todo.
-todo.deleteTodo = async (req, res, _next) => {
+todo.deleteTodo = async (req, res, next) => {
   const { _id } = req.body;
   const userId = req.userId;
 
   const todo = await Todo.findOne({ userId, _id });
 
-  if (!todo) return _next(new CustomError(404, "todo not found."));
+  if (!todo) return next(new CustomError(404, "todo not found."));
 
   await todo.remove();
 
