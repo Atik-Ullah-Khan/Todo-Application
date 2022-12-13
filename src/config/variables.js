@@ -6,7 +6,7 @@
  ***/
 
 const variables = {
-  port: process.env.PORT,
+  port: process.env.PORT || 3000,
   mongo_connection_string: process.env.MONGO_CONNECTION_STRING,
   access_token_secret: process.env.ACCESS_TOKEN_SECRET,
   refresh_token_secret: process.env.ACCESS_TOKEN_SECRET,

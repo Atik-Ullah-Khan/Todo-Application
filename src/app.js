@@ -1,11 +1,9 @@
 const express = require("express");
-const morgan = require("morgan");
 const cors = require("cors");
 
 const app = express();
 
 app.use(cors());
-app.use(morgan("tiny"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -17,6 +15,7 @@ const todoRoute = require("./api/routes/todoRoute");
 
 app.use("/api/user", userRoute);
 app.use("/api/todo", todoRoute);
+app.use("/ping", (_req, res) => res.status(200).send("pong"));
 
 app.use("*", notFound);
 app.use(errorHandler);

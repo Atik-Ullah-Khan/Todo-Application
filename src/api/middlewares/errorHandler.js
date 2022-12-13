@@ -12,9 +12,6 @@ const errorHandler = (err, _req, res, _next) => {
     res.status(err.status);
     res.json({ status: err.status, message: err.message });
   } else if (err instanceof Error) {
-    //TODO: remove this console.log() method later.
-
-    console.log(err);
     res.status(500);
     res.json({
       status: 500,
