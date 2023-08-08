@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+const buildTemplate = ({ name, link }) => {
+  const template = `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -60,18 +61,18 @@
         <h1>Password Reset</h1>
       </div>
       <div class="content">
-        <p class="user-name">Hello [User's Name],</p>
+        <p class="user-name">Hello ${name},</p>
         <p>
           We received a request to reset your password. If you didn't make this
           request, you can ignore this email.
         </p>
         <p>To reset your password, click the button below:</p>
-        <a href="[Reset Link]" class="btn" role="button">Reset Password</a>
+        <a href="${link}" class="btn" role="button">Reset Password</a>
         <p>
           If the button doesn't work, you can also copy and paste the following
           URL into your browser:
         </p>
-        <p>[Reset Link]</p>
+        <p>${link}</p>
       </div>
       <div class="footer">
         <p>
@@ -82,3 +83,9 @@
     </div>
   </body>
 </html>
+`;
+
+  return template;
+};
+
+module.exports = buildTemplate;
