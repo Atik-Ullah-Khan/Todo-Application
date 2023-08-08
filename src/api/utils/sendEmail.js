@@ -5,8 +5,16 @@
  * Date : 04/12/2022.
  ***/
 
+const fs = require("fs");
+const path = require("path");
 const nodemailer = require("nodemailer");
 const { company_email, email_password } = require("../../config/variables");
+
+const templatePath = path.join(
+  __dirname,
+  "../../templates/password-reset.html"
+);
+const htmlTemplate = fs.readFileSync(templatePath, "utf-8");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -16,36 +24,17 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const generateTemplate = (name, link) => {
-  const html = `<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    
-  </head>
-  <body
-    marginheight="0"
-    topmargin="0"
-    marginwidth="0"
-    style="margin: 0px; background-color: #f2f3f8"
-    leftmargin="0"
-  >
-    <div  style=" padding:50px; height:300px;">
-      <h1 style="color: #565656; font-weight: bold;"> Hi ${name} </h1>
-      <h2 style="font-weight: bold;">You have requested to reset your password.</h2>
-      <p>A unique link to reset your password has been generated for you. To reset your password, click the following link. The link is valid for only 5 minutes.</p>
-      <p> ${link} </p>
-    </div>
-
-  </body>
-</html>`;
-  return html;
+const generateTemplate = (name, link, email) => {
+  return htmlTemplate
+    .replace("[User's Name]", name)
+    .replaceAll("[Reset Link]", link);
 };
 
 const sendEmail = ({ email, name, link }) => {
   const template = generateTemplate(name, link);
 
   const options = {
-    from: company_email,
+    from: `Simpto ${company_email}`,
     to: email,
     subject: "Reset Password",
     html: template,

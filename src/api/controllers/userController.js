@@ -11,6 +11,7 @@ const CustomError = require("../../config/CustomError");
 const sendEmail = require("../utils/sendEmail");
 const uuid = require("../utils/userIdGenerator");
 const hashPassword = require("../utils/hashPassword");
+const { reset_url } = require("../../config/variables");
 const { signAccessToken, signResetToken } = require("../utils/tokenManager");
 
 // module scaffolding.
@@ -87,7 +88,7 @@ user.forgetPassword = async (req, res, next) => {
   if (!user) return next(new CustomError(404, "invalid email"));
 
   const token = await signResetToken(user.userId);
-  const resetURL = `http://127.0.0.1:5173/user/reset/?userId=${user.userId}&token=${token}`;
+  const resetURL = `${reset_url}/?userId=${user.userId}&token=${token}`;
 
   await sendEmail({
     email,

@@ -13,6 +13,7 @@ const variables = {
   reset_token_secret: process.env.RESET_TOKEN_SECRET,
   company_email: process.env.COMPANY_EMAIL,
   email_password: process.env.EMAIL_PASSWORD,
+  reset_url: process.env.RESET_URL || "http://127.0.0.1:5173/user/reset",
 };
 
 module.exports = variables;
