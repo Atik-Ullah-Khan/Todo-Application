@@ -5,7 +5,7 @@
  * Date : 24/11/2022.
  ***/
 
-const { connect } = require("mongoose");
+const { set, connect } = require("mongoose");
 
 const options = {
   useNewUrlParser: true,
@@ -14,6 +14,8 @@ const options = {
 
 const connectToDatabase = (URI) => {
   try {
+    set("strictQuery", false);
+
     connect(URI, options, () => {
       console.log("Database connected successfully 🚀");
     });
